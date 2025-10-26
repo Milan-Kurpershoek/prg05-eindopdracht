@@ -14,3 +14,15 @@ Added: <br>
 -Database table for books and genres <br>
 -One-to-Many relationship between books and genres table <br>
 -Changelog <br>
+
+## Sunday 26-10-2025
+Added: <br>
+-Working create page with validation to add books to your collection <br>
+-Index page that shows the title of your books <br>
+-Details page that gives more information on your books <br>
+-Delete option on the details page that deletes the book from your collection <br>
+-The start of the edit page (You get the corresponding book information for the book that is
+getting updated)
+
+
+

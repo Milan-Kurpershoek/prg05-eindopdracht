@@ -9,11 +9,12 @@ use Illuminate\Http\Request;
 class BookController extends Controller
 {
 
-//    public function index()
-//    {
-//
-//    }
-    //
+    public function index()
+    {
+        $books = Book::all();
+        return view('books.index', compact(var_name: 'books'));
+    }
+
     public function show(Book $book){
         return view('books.show', compact(var_name: 'book'));
 
@@ -35,7 +36,11 @@ class BookController extends Controller
         //Validatie
         $request->validate([
             'title' => 'required|max:100',
-            'description' => 'required'
+            'author' => 'required|max:100',
+            'description' => 'required',
+            'pages' => 'required',
+            'genre_id' => 'required'
+
         ]);
         //errors tonen
         //beveiliging
@@ -43,19 +48,30 @@ class BookController extends Controller
         //INSERT INTO sql
         $book = new Book();
         $book ->title = $request->input('title');
-        $book ->author = 'Thomas';
+        $book ->author = $request->input('author');
         $book ->description = $request->input('description');
-        $book -> pages =  400;
+        $book -> pages = $request->input('pages');
         $book ->genre_id = $request->input('genre_id');
-
-//        $book -> genres = 'Fantasy';
-
 
         $book->save();
 
-//        return redirect()->route('books.index');
+        return redirect()->route('books.index');
+    }
+
+    public function destroy(Book $book)
+    {
+        $book->delete();
+        return redirect()->route('books.index');
+    }
+
+    public function edit(Book $book)
+    {
+        $book->update();
+        return view('books.update', compact(var_name: 'book'));
     }
 }
+
+
 
 
 
