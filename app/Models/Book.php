@@ -14,4 +14,12 @@ class Book extends Model
     }
 
     use SoftDeletes;
+
+    protected $fillable = [
+        'title',
+        'author',
+        'description',
+        'pages',
+        'genre_id',
+    ];
 }

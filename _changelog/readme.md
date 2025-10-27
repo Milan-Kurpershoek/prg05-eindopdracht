@@ -24,5 +24,8 @@ Added: <br>
 -The start of the edit page (You get the corresponding book information for the book that is
 getting updated)
 
+## Monday 27-10-2025
+Added: <br>
+-Working edit page with validation to update book information in your collection <br>
 
 

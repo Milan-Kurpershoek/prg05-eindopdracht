@@ -8,8 +8,54 @@
     <title>Edit</title>
 </head>
 <body>
-<p>Hello edit</p>
-<p> {{ $book->title }}</p>
-<p> {{ $book->id }}</p>
+<form action="{{route('books.update', $book)}}" method="post">
+    @csrf
+    @method('PATCH')
+    <div>
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title" value="{{ $book->title }}">
+        {{--            @error('title')--}}
+        {{--            <div class="alert alert-danger>{{$message}}"></div>--}}
+        {{--            @enderror--}}
+        <x-input-error :messages="$errors->first('title')"/>
+    </div>
+
+    <div>
+        <label for="author">Author</label>
+        <input type="text" name="author" id="author" value="{{ $book->author }}">
+        <x-input-error :messages="$errors->first('author')"/>
+    </div>
+
+    <div>
+        <label for="description">Description</label>
+        <input type="text" name="description" id="description" value="{{ $book->description }}">
+        <x-input-error :messages="$errors->first('description')"/>
+    </div>
+
+    <div>
+        <label for="pages">Pages</label>
+        <input type="text" name="pages" id="pages" value="{{ $book->pages }}">
+        <x-input-error :messages="$errors->first('pages')"/>
+    </div>
+
+    <div>
+        <label for="genre_id">Genre</label>
+
+        <select name="genre_id" id="genre_id">
+{{--            <option value="">{{$book->genre->name}}</option>--}}
+
+            @foreach($genres as $genre)
+                <option value="{{$genre->id}}" {{$book->genre_id == $genre->id ? 'selected': ''}}>{{$genre->name}}</option>
+            @endforeach
+        </select>
+
+        <x-input-error :messages="$errors->first('genre_id')"/>
+    </div>
+
+    <div>
+        <input type="submit" name="submit" value="Update">
+    </div>
+</form>
+
 </body>
 </html>

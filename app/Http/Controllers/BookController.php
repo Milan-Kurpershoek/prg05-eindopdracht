@@ -66,8 +66,30 @@ class BookController extends Controller
 
     public function edit(Book $book)
     {
-        $book->update();
-        return view('books.update', compact(var_name: 'book'));
+        $genres = Genre::all();
+        return view('books.update', compact('book', 'genres'));
+    }
+
+    public function update (Book $book){
+
+        request()->validate([
+            'title' => 'required|max:100',
+            'author' => 'required|max:100',
+            'description' => 'required',
+            'pages' => 'required',
+            'genre_id' => 'required'
+            ]);
+
+        $book->update([
+            'title' => request('title'),
+            'author' => request('author'),
+            'description' => request('description'),
+            'pages' => request('pages'),
+            'genre_id' => request('genre_id'),
+        ]);
+
+        return redirect()->route('books.index');
+
     }
 }
 
