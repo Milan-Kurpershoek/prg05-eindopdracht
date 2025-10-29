@@ -12,7 +12,8 @@ class BookController extends Controller
     public function index()
     {
         $books = Book::all();
-        return view('books.index', compact(var_name: 'books'));
+        $genres = Genre::all();
+        return view('books.index', compact('books', 'genres'));
     }
 
     public function show(Book $book){
@@ -90,6 +91,30 @@ class BookController extends Controller
 
         return redirect()->route('books.index');
 
+    }
+
+    public function search(Request $request){
+        $genres = Genre::all();
+
+        $search = $request->search;
+
+        $books = Book::where('title', 'LIKE', '%'.$search. '%')->get();
+
+        return view('books.index', compact('books', 'genres'));
+
+    }
+
+    public function filter(Request $request){
+        $genres = Genre::all();
+
+        $filter = Book::query()->with('genre');
+
+        if ($request->filled('genre_id')){
+            $filter->where('genre_id', $request->genre_id);
+        }
+        $books = $filter->get();
+
+        return view('books.index', compact('books', 'genres'));
     }
 }
 

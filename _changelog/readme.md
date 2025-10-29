@@ -28,4 +28,7 @@ getting updated)
 Added: <br>
 -Working edit page with validation to update book information in your collection <br>
 
-
+## Wednesday 29-10-2025
+Added: <br>
+-Search option so you can search for books based on the title <br>
+-Filter option so you can filter for books based of their genre <br>
