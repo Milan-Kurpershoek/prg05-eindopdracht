@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('description');
             $table->integer('pages');
             $table->foreignId('genre_id')->constrained();
+            $table->foreignId('user_id');
         });
     }
 

@@ -27,12 +27,11 @@
 <p> {{ $book->description }}</p>
 <p> {{ $book->pages }}</p>
 <p> {{$book->genre->name}}</p>
+<p> {{$book->user_id}}</p>
 
-<form action="{{route('books.destroy', $book->id)}}" method="post">
-    @csrf
-    @method('DELETE')
-    <button>Delete</button>
-</form>
+@can('edit-book', $book)
 <a href="{{ route('books.edit', $book->id) }}">Edit</a>
+@endcan
+
 </body>
 </html>

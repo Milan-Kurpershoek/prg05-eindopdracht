@@ -57,5 +57,11 @@
     </div>
 </form>
 
+<form action="{{route('books.destroy', $book->id)}}" method="post">
+    @csrf
+    @method('DELETE')
+    <button>Delete</button>
+</form>
+
 </body>
 </html>

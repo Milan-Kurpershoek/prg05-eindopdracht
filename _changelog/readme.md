@@ -32,3 +32,9 @@ Added: <br>
 Added: <br>
 -Search option so you can search for books based on the title <br>
 -Filter option so you can filter for books based of their genre <br>
+
+## Friday 31-10-2025
+Added: <br>
+-Authorization so a user needs to be logged in to add (create) a book <br>
+-Authorization so a user can't edit (update) a book that isn't theirs.
+

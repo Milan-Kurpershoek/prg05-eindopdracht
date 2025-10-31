@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Genre;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -23,6 +25,10 @@ class BookController extends Controller
 
     public function create()
     {
+        if (Auth::guest()){
+            return redirect('/login');
+        }
+
         $genres = Genre::all();
         return view('books.create', compact('genres'));
     }
@@ -53,6 +59,7 @@ class BookController extends Controller
         $book ->description = $request->input('description');
         $book -> pages = $request->input('pages');
         $book ->genre_id = $request->input('genre_id');
+        $book ->user_id = Auth::id();
 
         $book->save();
 
@@ -67,6 +74,16 @@ class BookController extends Controller
 
     public function edit(Book $book)
     {
+//       \Gate::define('edit-book', function (User $user, Book $book){
+//           return $book->user()->is($user);
+//       });
+
+//        if (Auth::guest()){
+//            return redirect('/login');
+//        }
+
+    /*    \Gate::authorize('edit-book', $book);*/
+
         $genres = Genre::all();
         return view('books.update', compact('book', 'genres'));
     }
