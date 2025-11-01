@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('pages');
             $table->foreignId('genre_id')->constrained();
             $table->foreignId('user_id');
+            $table->boolean('status')->default(true);
         });
     }
 

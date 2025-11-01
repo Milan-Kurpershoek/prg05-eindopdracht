@@ -22,12 +22,16 @@ require __DIR__.'/auth.php';
 
 //Route::get('books/show', [BookController::class, 'show']);
 
-Route::resource('books',BookController::class)->only(['index', 'show']);
-Route::resource('books',BookController::class)->except(['index', 'show'])->middleware(['auth', 'can:edit-book,book']);
+Route::resource('books',BookController::class);
+
+//Route::resource('books',BookController::class)->only(['index', 'show']);
+//Route::resource('books',BookController::class)->except(['index', 'show'])->middleware(['auth', 'can:edit-book,book']);
 
 //Route::get('/search', [BookController::class, 'search'])->name('books.search');
 
 Route::get('/search', [BookController::class, 'search']);
 Route::get('/filter', [BookController::class, 'filter']);
 
+Route::get('/admin', [BookController::class, 'admin']);
 
+Route::patch('/books/{book}/status', [BookController::class, 'status'])->name('books.status');

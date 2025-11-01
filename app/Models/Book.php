@@ -22,6 +22,7 @@ class Book extends Model
         'description',
         'pages',
         'genre_id',
+        'status'
     ];
 
     public function user(): BelongsTo

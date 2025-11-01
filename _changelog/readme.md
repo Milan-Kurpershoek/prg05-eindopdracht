@@ -36,5 +36,10 @@ Added: <br>
 ## Friday 31-10-2025
 Added: <br>
 -Authorization so a user needs to be logged in to add (create) a book <br>
--Authorization so a user can't edit (update) a book that isn't theirs.
+-Authorization so a user can't edit (update) a book that isn't theirs
+
+## Saturday 1-11-2025
+Added: <br>
+-Admin roll which can activate or deactivate a users books. When a book is deactivated it won't show on the index page
+
 

@@ -81,8 +81,7 @@ class BookController extends Controller
 //        if (Auth::guest()){
 //            return redirect('/login');
 //        }
-
-    /*    \Gate::authorize('edit-book', $book);*/
+        \Gate::authorize('edit-book', $book);
 
         $genres = Genre::all();
         return view('books.update', compact('book', 'genres'));
@@ -132,6 +131,31 @@ class BookController extends Controller
         $books = $filter->get();
 
         return view('books.index', compact('books', 'genres'));
+    }
+
+    public function admin()
+    {
+
+        if (Auth::guest() || Auth::user()->role !== 1){
+            return redirect('/login');
+        }
+
+        $books = Book::all();
+        $genres = Genre::all();
+        $users = User::all();
+        return view('books.admin', compact('books', 'genres', 'users'));
+    }
+
+    public function status(Book $book)
+    {
+        if ($book->status === 0){
+            $book->update(['status' => 1]);
+        }
+        else if ($book->status === 1){
+            $book->update(['status' => 0]);
+        }
+
+        return redirect()->back();
     }
 }
 
