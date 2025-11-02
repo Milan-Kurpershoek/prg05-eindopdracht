@@ -32,6 +32,9 @@ Route::resource('books',BookController::class);
 Route::get('/search', [BookController::class, 'search']);
 Route::get('/filter', [BookController::class, 'filter']);
 
-Route::get('/admin', [BookController::class, 'admin']);
+Route::get('/admin', [BookController::class, 'admin']) ->name('admin.page');
 
 Route::patch('/books/{book}/status', [BookController::class, 'status'])->name('books.status');
+
+Route::get('/review/{book}', [BookController::class, 'review'])->name('books.review');
+Route::post('/store/review', [BookController::class, 'storeReview'])->name('store.review');

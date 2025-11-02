@@ -1,67 +1,52 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Edit</title>
-</head>
-<body>
-<form action="{{route('books.update', $book)}}" method="post">
-    @csrf
-    @method('PATCH')
-    <div>
-        <label for="title">Title</label>
-        <input type="text" name="title" id="title" value="{{ $book->title }}">
-        {{--            @error('title')--}}
-        {{--            <div class="alert alert-danger>{{$message}}"></div>--}}
-        {{--            @enderror--}}
-        <x-input-error :messages="$errors->first('title')"/>
+<x-layout>
+    <div class="min-h-screen flex justify-center items-start pt-16 bg-gray-100" >
+        <form action="{{route('books.update', $book)}}" method="post" class="bg-white text-gray-500 max-w-[340px] w-full mx-4 p-6 text-left text-sm rounded-lg border border-gray-300/60">
+            @csrf
+            @method('PATCH')
+            <div>
+                <label class="font-medium" for="title">Title</label>
+                <input type="text" name="title" id="title" value="{{ $book->title }}" class="w-full resize-none border mt-1.5 border-gray-500/30 outline-none rounded py-2.5 px-3">
+                <x-input-error :messages="$errors->first('title')"/>
+            </div>
+
+            <div>
+                <label class="font-medium" for="author">Author</label>
+                <input type="text" name="author" id="author" value="{{ $book->author }}" class="w-full resize-none border mt-1.5 border-gray-500/30 outline-none rounded py-2.5 px-3">
+                <x-input-error :messages="$errors->first('author')"/>
+            </div>
+
+            <div>
+                <label class="font-medium" for="description">Description</label>
+                <input type="text" name="description" id="description" value="{{ $book->description }}" class="w-full resize-none border mt-1.5 border-gray-500/30 outline-none rounded py-2.5 px-3">
+                <x-input-error :messages="$errors->first('description')"/>
+            </div>
+
+            <div>
+                <label class="font-medium" for="pages">Pages</label>
+                <input type="text" name="pages" id="pages" value="{{ $book->pages }}" class="w-full resize-none border mt-1.5 border-gray-500/30 outline-none rounded py-2.5 px-3">
+                <x-input-error :messages="$errors->first('pages')"/>
+            </div>
+
+            <div>
+                <label class="font-medium" for="genre_id">Genre</label>
+
+                <select name="genre_id" id="genre_id" class="w-full resize-none border mt-1.5 border-gray-500/30 outline-none rounded py-2.5 px-3">
+                    @foreach($genres as $genre)
+                        <option value="{{$genre->id}}" {{$book->genre_id == $genre->id ? 'selected': ''}}>{{$genre->name}}</option>
+                    @endforeach
+                </select>
+
+                <x-input-error :messages="$errors->first('genre_id')"/>
+            </div>
+
+            <div>
+                <input type="submit" name="submit" value="Update" class="my-3 bg-indigo-500 py-2 px-5 rounded text-white font-medium">
+            </div>
+        </form>
+        <form action="{{route('books.destroy', $book->id)}}" method="post">
+            @csrf
+            @method('DELETE')
+            <button class="my-3 bg-indigo-500 py-2 px-5 rounded text-white font-medium">Delete Book</button >
+        </form>
     </div>
-
-    <div>
-        <label for="author">Author</label>
-        <input type="text" name="author" id="author" value="{{ $book->author }}">
-        <x-input-error :messages="$errors->first('author')"/>
-    </div>
-
-    <div>
-        <label for="description">Description</label>
-        <input type="text" name="description" id="description" value="{{ $book->description }}">
-        <x-input-error :messages="$errors->first('description')"/>
-    </div>
-
-    <div>
-        <label for="pages">Pages</label>
-        <input type="text" name="pages" id="pages" value="{{ $book->pages }}">
-        <x-input-error :messages="$errors->first('pages')"/>
-    </div>
-
-    <div>
-        <label for="genre_id">Genre</label>
-
-        <select name="genre_id" id="genre_id">
-{{--            <option value="">{{$book->genre->name}}</option>--}}
-
-            @foreach($genres as $genre)
-                <option value="{{$genre->id}}" {{$book->genre_id == $genre->id ? 'selected': ''}}>{{$genre->name}}</option>
-            @endforeach
-        </select>
-
-        <x-input-error :messages="$errors->first('genre_id')"/>
-    </div>
-
-    <div>
-        <input type="submit" name="submit" value="Update">
-    </div>
-</form>
-
-<form action="{{route('books.destroy', $book->id)}}" method="post">
-    @csrf
-    @method('DELETE')
-    <button>Delete</button>
-</form>
-
-</body>
-</html>
+</x-layout>

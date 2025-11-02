@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Genre;
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -19,7 +21,9 @@ class BookController extends Controller
     }
 
     public function show(Book $book){
-        return view('books.show', compact(var_name: 'book'));
+        $review = Review::with('user')->where('book_id', $book->id)->get();
+
+        return view('books.show', compact('book', 'review'));
 
     }
 
@@ -29,9 +33,15 @@ class BookController extends Controller
             return redirect('/login');
         }
 
+        if (!auth()->user()->canCreateBooks()){
+            return redirect()->route('books.index')
+            ->with('error', 'You need to write 3 reviews before you can add a book');
+        }
+
         $genres = Genre::all();
         return view('books.create', compact('genres'));
     }
+
 
     //database tabel -> migration
     //model
@@ -45,10 +55,18 @@ class BookController extends Controller
             'title' => 'required|max:100',
             'author' => 'required|max:100',
             'description' => 'required',
-            'pages' => 'required',
-            'genre_id' => 'required'
+            'pages' => 'required|numeric',
+            'genre_id' => 'required',
+            'image'=> 'nullable|image|max:4096'
 
         ]);
+
+        $bookImage = null;
+
+        if ($request->hasFile('image')){
+            $bookImage = $request->file('image')->storePublicly('book', 'public');
+        }
+
         //errors tonen
         //beveiliging
         //data terugschrijven in de form fields
@@ -60,6 +78,7 @@ class BookController extends Controller
         $book -> pages = $request->input('pages');
         $book ->genre_id = $request->input('genre_id');
         $book ->user_id = Auth::id();
+        $book ->image = $bookImage;
 
         $book->save();
 
@@ -68,6 +87,11 @@ class BookController extends Controller
 
     public function destroy(Book $book)
     {
+
+        if ($book->image){
+            Storage::disk('public')->delete($book->image);
+        }
+
         $book->delete();
         return redirect()->route('books.index');
     }
@@ -93,7 +117,7 @@ class BookController extends Controller
             'title' => 'required|max:100',
             'author' => 'required|max:100',
             'description' => 'required',
-            'pages' => 'required',
+            'pages' => 'required|numeric',
             'genre_id' => 'required'
             ]);
 
@@ -114,8 +138,12 @@ class BookController extends Controller
 
         $search = $request->search;
 
-        $books = Book::where('title', 'LIKE', '%'.$search. '%')->get();
-
+        if ($search) {
+            $books = Book::where('title', 'LIKE', '%' . $search . '%')
+                ->orWhere('author', 'LIKE', '%' . $search . '%')->get();
+        }else{
+            $books = Book::all();
+        }
         return view('books.index', compact('books', 'genres'));
 
     }
@@ -137,7 +165,7 @@ class BookController extends Controller
     {
 
         if (Auth::guest() || Auth::user()->role !== 1){
-            return redirect('/login');
+            return redirect('/dashboard');
         }
 
         $books = Book::all();
@@ -156,6 +184,28 @@ class BookController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function review($bookId)
+    {
+        $book = Book::findOrFail($bookId);
+        return view('books.review', compact('book'));
+    }
+
+    public function storeReview(Request $request)
+    {
+        $request->validate([
+            'opinion' => 'required'
+        ]);
+
+        $review = new Review();
+        $review ->user_id = Auth::id();
+        $review ->book_id = $request->input('book_id');
+        $review ->opinion = $request->input('opinion');
+
+        $review->save();
+
+        return redirect()->route('books.show', $review->book_id);
     }
 }
 

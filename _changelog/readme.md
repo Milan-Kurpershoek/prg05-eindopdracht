@@ -42,4 +42,8 @@ Added: <br>
 Added: <br>
 -Admin roll which can activate or deactivate a users books. When a book is deactivated it won't show on the index page
 
+## Sunday 2-11-2025
+Added: <br>
+-Added deeper validation in the form of reviews. A user needs to have 3 reviews to be able to create a book of their own <br>
+-Added image upload to the create page
 

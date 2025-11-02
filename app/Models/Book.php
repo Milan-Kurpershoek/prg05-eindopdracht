@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Book extends Model
@@ -22,11 +23,18 @@ class Book extends Model
         'description',
         'pages',
         'genre_id',
-        'status'
+        'image',
+        'status',
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
+    public function review(): HasMany
+    {
+        return $this->hasMany(Review::class, 'book_id');
+    }
+
 }

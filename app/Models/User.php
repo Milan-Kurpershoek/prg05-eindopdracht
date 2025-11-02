@@ -51,4 +51,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(Book::class);
     }
+
+    public function review(): User|HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function canCreateBooks()
+    {
+        return @$this->review()->count() >= 3;
+    }
+
+
 }

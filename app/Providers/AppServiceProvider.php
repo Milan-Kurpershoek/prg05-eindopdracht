@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         \Gate::define('edit-book', function (User $user, Book $book){
-            return $book->user()->is($user);
+            return $book->user()->is($user) || $user->role === 1;
         });
     }
 }

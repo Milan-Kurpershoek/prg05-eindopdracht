@@ -46,8 +46,16 @@
                         <p> {{$book->status}}</p>
                     </td>
                     <td class="px-4 py-4 text-sm">
-                        <button class="cursor-pointer text-green-600 font-medium mr-4">Edit</button>
-                        <button class="cursor-pointer text-red-600 font-medium">Delete</button>
+                        <a href="{{ route('books.edit', $book->id) }}" class="cursor-pointer text-green-600 font-medium mr-4">
+                            Edit
+                        </a>
+                        <form action="{{route('books.destroy', $book->id)}}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button class="cursor-pointer text-red-600 font-medium">Delete</button >
+                        </form>
+{{--                        <button class="cursor-pointer text-green-600 font-medium mr-4">Edit</button>--}}
+{{--                        <button class="cursor-pointer text-red-600 font-medium">Delete</button>--}}
                     </td>
                     <td class="px-4 py-4 text-sm">
                         <form action="{{route('books.status', $book)}}" method="post">
